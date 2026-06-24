@@ -1,0 +1,4 @@
+db.sqlite3
+__pycache__/
+.env
+mail/static/mail/bootstrap-5.3.8-dist/
