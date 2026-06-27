@@ -77,8 +77,21 @@ async function mailbox_view(mailbox) {
 
     // Insert each email to the Element
     emails.forEach(email => {
-      email_element = document.createElement('div');
-      email_element.classList.add("row", "flex-nowrap", "py-3", "border");
+      // Create a Parent Element (Row)
+      email_element = document.createElement('a');
+      email_element.href = `/emails/${email.id}`;
+      const classes = [
+        "row",
+        "flex-nowrap",
+        "text-decoration-none",
+        "py-3",
+        "border",
+        "email-item",
+        email.read ? "bg-body-secondary" : "bg-light",
+      ];
+      email_element.classList.add(...classes);
+
+      // Add Child Elements (Col)
       email_element.innerHTML += `
         <div class="col-auto border-end">
             <img src="/static/mail/email.svg" style="width: 40px; height: 40px;">
