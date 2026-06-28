@@ -25,7 +25,7 @@ function compose_email() {
   document.querySelector('#compose-body').value = '';
 
   // Show the mailbox name
-  document.querySelector('#email-box-title').innerHTML = `<h3>New Email</h3>`;
+  document.querySelector('#email-box-title').innerHTML = `<h2>New Email</h2>`;
 }
 
 function load_mailbox(mailbox) {
@@ -35,16 +35,14 @@ function load_mailbox(mailbox) {
   document.querySelector('#compose-view').style.display = 'none';
 
   // Show the mailbox name
-  document.querySelector('#email-box-title').innerHTML = `<h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3>`;
+  document.querySelector('#email-box-title').innerHTML = `<h2>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h2>`;
 
   // Loads the actual emails
   mailbox_view(mailbox);
 }
 
 
-/* ===== AJAX Functions ===== */
-
-// Logic for composing email
+/*===== Logic for composing email =====*/
 async function compose_view(event) {
   // Prevent actual form submission
   event.preventDefault();
@@ -71,7 +69,7 @@ async function compose_view(event) {
   }
 }
 
-// Logic for rendering emails
+/*===== Logic for rendering emails =====*/
 async function mailbox_view(mailbox) {
   let emails = [];
 
