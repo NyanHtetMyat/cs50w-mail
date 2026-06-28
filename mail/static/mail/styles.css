@@ -2,6 +2,38 @@ textarea {
     min-height: 400px;
 }
 
+.layout {
+    display: grid;
+    grid-template-areas: "sidebar header"
+                         "sidebar main";
+
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto 1fr;
+    
+
+    height: 100dvh;
+}
+
+.sidebar {
+    grid-area: sidebar;
+}
+
+.nav-item {
+    list-style-type: none;
+}
+
+.header {
+    grid-area: header;
+
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+}
+
+.main {
+    grid-area: main;
+}
+
 /* Removes default underline and blue links */
 .email-item {
     text-decoration: none;

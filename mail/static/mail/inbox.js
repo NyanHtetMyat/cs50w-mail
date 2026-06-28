@@ -23,6 +23,9 @@ function compose_email() {
   document.querySelector('#compose-recipients').value = '';
   document.querySelector('#compose-subject').value = '';
   document.querySelector('#compose-body').value = '';
+
+  // Show the mailbox name
+  document.querySelector('#email-box-title').innerHTML = `<h3>New Email</h3>`;
 }
 
 function load_mailbox(mailbox) {
@@ -32,11 +35,12 @@ function load_mailbox(mailbox) {
   document.querySelector('#compose-view').style.display = 'none';
 
   // Show the mailbox name
-  document.querySelector('#emails-view').innerHTML = `<h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3>`;
+  document.querySelector('#email-box-title').innerHTML = `<h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3>`;
 
   // Loads the actual emails
   mailbox_view(mailbox);
 }
+
 
 /* ===== AJAX Functions ===== */
 
@@ -69,49 +73,55 @@ async function compose_view(event) {
 
 // Logic for rendering emails
 async function mailbox_view(mailbox) {
+  let emails = [];
+
+  // Fetches the emails from backend
   try {
     const response = await fetch(`/emails/${mailbox}`);
-    const emails = await response.json();
-
-    emails_container = document.getElementById("emails-view");
-
-    // Insert each email to the Element
-    emails.forEach(email => {
-      // Create a Parent Element (Row)
-      email_element = document.createElement('a');
-      email_element.href = `/emails/${email.id}`;
-      const classes = [
-        "row",
-        "flex-nowrap",
-        "text-decoration-none",
-        "py-3",
-        "border",
-        "email-item",
-        email.read ? "bg-body-secondary" : "bg-light",
-      ];
-      email_element.classList.add(...classes);
-
-      // Add Child Elements (Col)
-      email_element.innerHTML += `
-        <div class="col-auto border-end">
-            <img src="/static/mail/email.svg" style="width: 40px; height: 40px;">
-        </div>
-        
-        <div class="col">
-            <dl class="row mb-0">
-                <dt class="col-auto fw-bold">From :</dt>
-                <dd class="col">${email.sender}</dd>
-
-                <h4 class="col-12 text-turncate">${email.subject}</h4>
-
-                <small class="col-12 text-muted">${email.timestamp}</small>
-            </dl>
-        </div>
-      `
-      emails_container.append(email_element);
-    });
+    emails = await response.json();
   }
   catch (error) {
     console.log(`Error: ${error.message}`);
+    return;
   }
+
+  // Get the email container and empty it
+  emails_container = document.getElementById("emails-view");
+  emails_container.innerHTML = ""
+
+  // Insert each email to the container
+  emails.forEach(email => {
+    // Create a Parent Element (Row)
+    email_element = document.createElement('a');
+    email_element.href = `/emails/${email.id}`;
+    const classes = [
+      "row",
+      "flex-nowrap",
+      "text-decoration-none",
+      "py-3",
+      "border",
+      "email-item",
+      email.read ? "bg-body-secondary" : "bg-light",
+    ];
+    email_element.classList.add(...classes);
+
+    // Add Child Elements (Col)
+    email_element.innerHTML = `
+      <div class="col-auto border-end">
+          <img src="/static/mail/email.svg" style="width: 40px; height: 40px;">
+      </div>
+      
+      <div class="col">
+          <dl class="row mb-0">
+              <dt class="col-auto fw-bold">From :</dt>
+              <dd class="col">${email.sender}</dd>
+
+              <h4 class="col-12 text-turncate">${email.subject}</h4>
+
+              <small class="col-12 text-muted">${email.timestamp}</small>
+          </dl>
+      </div>
+    `
+    emails_container.append(email_element);
+  });
 }
