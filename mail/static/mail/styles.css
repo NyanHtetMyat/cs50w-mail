@@ -17,9 +17,15 @@ textarea {
 .sidebar {
     grid-area: sidebar;
 
+    background-color: rgb(192, 192, 192);
+
     width: 240px;
     display: flex;
     flex-direction: column;
+}
+
+.sidebar-header, .header {
+    height: 80px;   /* I had to manually align these two due to my grid layout unfortunately :( */
 }
 
 .nav-items {
@@ -80,6 +86,7 @@ textarea {
 
     display: flex;
     flex-wrap: nowrap;
+    align-items: center;
     justify-content: space-between;
 }
 

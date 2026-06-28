@@ -5,7 +5,7 @@
 
 
     <aside class="sidebar border-end bg-white">
-        <div class="sidebar-header d-flex flex-nowrap align-items-center border-bottom px-3 py-4 m-0">
+        <div class="sidebar-header d-flex flex-nowrap align-items-center p-3 border-bottom">
             <img class="sidebar-brand" src="{% static 'mail/email-logo.svg' %}">
             <h2 class="sidebar-title">Email</h2>
         </div>
@@ -44,12 +44,12 @@
         </ul>
     </aside>
 
-    <header class="header p-4 border-blue">
+    <header class="header p-4 border-bottom">
         <div id="email-box-title"></div>
         <h4>{{ request.user.email }}</h4>
     </header>
 
-    <main class="main p-4 border-red">
+    <main class="main p-4">
 
         <div class="container" id="emails-view">
         </div>
