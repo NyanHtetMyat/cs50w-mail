@@ -4,29 +4,39 @@
 {% block body %}
 
 
-    <aside class="sidebar border-red">
+    <aside class="sidebar border-end">
         <h3>Email</h3>
-        <ul class="nav-items">
-            <li class="nav-item"><button class="btn nav-link" id="inbox">Inbox</button></li>
-            <li class="nav-item"><button class="nav-link" id="compose">Compose</button></li>
-            <li class="nav-item"><button class="nav-link" id="sent">Sent</button></li>
-            <li class="nav-item"><button class="nav-link" id="archived">Archived</button></li>
-            <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
+        <ul class="nav-items p-0">
+            <li class="nav-item border-red">
+                <img class="nav-icon border-blue" src="{% static 'mail/email.svg' %}">
+                <button class="nav-btn border-green" id="inbox">Inbox</button>
+            </li>
+            <li class="nav-item">
+                <img class="nav-icon border-blue" src="{% static 'mail/email.svg' %}">
+                <button class="nav-btn" id="compose">Compose</button>
+            </li>
+            <li class="nav-item">
+                <img class="nav-icon border-blue" src="{% static 'mail/email.svg' %}">
+                <button class="nav-btn" id="sent">Sent</button>
+            </li>
+            <li class="nav-item">
+                <img class="nav-icon border-blue" src="{% static 'mail/email.svg' %}">
+                <button class="nav-btn" id="archived">Archived</button>
+            </li>
+            <li class="nav-item">
+                <img class="nav-icon border-blue" src="{% static 'mail/email.svg' %}">
+                <a class="nav-btn" href="{% url 'logout' %}">Logout</a>
+            </li>
         </ul>
-            <!-- <button class="btn btn-sm btn-outline-primary" id="inbox">Inbox</button>
-            <button class="btn btn-sm btn-outline-primary" id="compose">Compose</button>
-            <button class="btn btn-sm btn-outline-primary" id="sent">Sent</button>
-            <button class="btn btn-sm btn-outline-primary" id="archived">Archived</button>
-            <a class="btn btn-sm btn-outline-primary" href="{% url 'logout' %}">Log Out</a> -->
     </aside>
 
-    <header class="header border-blue">
+    <header class="header">
         <div id="email-box-title"></div>
         
         <h2>{{ request.user.email }}</h2>
     </header>
 
-    <main class="main container-fluid border-green">
+    <main class="main container-fluid">
 
         <div id="emails-view">
         </div>
