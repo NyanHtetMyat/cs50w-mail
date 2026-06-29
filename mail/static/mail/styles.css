@@ -1,3 +1,16 @@
+:root {
+    --primary-color: #3a1269;
+    --primary-bg-color: #f1ebf8;
+
+    --sidebar-bg-color: #241244;
+    --sidebar-color: #f1ebf8;
+    --sidebar-hover-bg-color: #140925;
+
+    --main-bg-color: #cdc3d8;
+
+    --email-read-bg-color: #d5d2d8; /* Darkens the '--primary-bg-color' */
+}
+
 textarea {
     min-height: 400px;
 }
@@ -17,7 +30,8 @@ textarea {
 .sidebar {
     grid-area: sidebar;
 
-    background-color: rgb(192, 192, 192);
+    background-color: var(--sidebar-bg-color);
+    color: var(--sidebar-color);
 
     width: 240px;
     display: flex;
@@ -37,7 +51,7 @@ textarea {
 }
 
 .nav-btn {
-    background: none;
+    background: none;   /* For some reason, without this, background becomes white */
     border: none;
     color: inherit;
     text-align: left;
@@ -53,13 +67,12 @@ textarea {
 }
 
 .nav-btn:hover {
-    background-color: #d8d8d8;
+    background-color: var(--sidebar-hover-bg-color);
 }
 
 .sidebar-brand, .nav-icon {
     width: 32px;
     height: 32px;
-    flex-shrink: 0;
 }
 
 .sidebar-title, .nav-text {
@@ -74,6 +87,9 @@ textarea {
     flex-wrap: nowrap;
     align-items: center;
     justify-content: space-between;
+
+    background-color: var(--primary-bg-color);
+    color: var(--primary-color);
 }
 
 /*=== Main Part ===*/
@@ -84,25 +100,31 @@ textarea {
     flex-direction: column;
 
     overflow-y: auto;
+
+    background-color: var(--main-bg-color);
 }
 
 #emails-view, #compose-view {
-    /* background-color: #f4f6f9;
-    border: 1px solid rgba(70, 70, 70, 0.774); */
-
     flex-grow: 1;
 }
 
 .email-item {
     text-decoration: none;
-    color: inherit;
+    color: var(--primary-color);
 
     transition: transform 0.2s;
 }
 
+/* Colors for emails that are read or unread */
+.email-unread {
+    background-color: var(--primary-bg-color);
+}
+.email-read {
+    background-color: var(--email-read-bg-color);
+}
+
 .email-item:hover {
     transform: translateX(24px);
-    /* transform: scale(1.05); */
 }
 
 /* ===== For Smaller Screens ===== */
@@ -123,7 +145,7 @@ textarea {
         opacity: 0;
         position: absolute;
 
-        left: 64px;     /* Starts after icon size 64px */
+        left: 64px;     /* Starts after icon size (64px) */
         width: 0;
         height: 100%;
         margin: 0;
@@ -133,16 +155,13 @@ textarea {
         display: flex;
         align-items: center;
 
-        /* background-color: white; */
-        color: black;
-
         transition: width 0.2s ease;
     }
     .nav-btn:hover {
         .nav-text {
             opacity: 1;
             width: 128px;
-            background-color: #d8d8d8;
+            background-color: var(--sidebar-hover-bg-color);
         }
     }
 
