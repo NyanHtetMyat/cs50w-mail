@@ -1,0 +1,233 @@
+/* USED BY 'inbox.html' */
+
+.dashboard-layout {
+    display: grid;
+    grid-template-areas: "sidebar header"
+                         "sidebar main";
+
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto 1fr;
+    
+    height: 100%;
+}
+
+
+/* ===== SIDEBAR PART ===== */
+.sidebar {
+    grid-area: sidebar;
+
+    background-color: var(--primary-color);
+    color: var(--primary-bg-color);
+
+    width: 240px;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-header, .header {
+    height: 80px;   /* I had to manually align these two due to my grid layout unfortunately :( */
+}
+
+.nav-items {
+    flex-grow: 1;
+
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+}
+
+.nav-btn {
+    background: none;   /* For some reason, without this, background becomes white */
+    border: none;
+    color: inherit;
+    text-align: left;
+
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+
+    padding: 1rem;
+    cursor: pointer;
+    /* overflow: hidden; */
+}
+
+.nav-btn:hover {
+    background-color: var(--primary-hover-color);
+}
+
+.sidebar-title, .nav-text {
+    margin-left: 1rem;
+}
+
+/* ===== HEADING PART ===== */
+.header {
+    grid-area: header;
+
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: space-between;
+
+    background-color: var(--primary-bg-color);
+    color: var(--primary-color);
+}
+
+
+/* ===== MAIN PART ===== */
+.main {
+    grid-area: main;
+
+    display: flex;
+    flex-direction: column;
+
+    overflow-y: auto;
+}
+
+/*=== Inbox, Sent, Archived Parts ===*/
+#emails-view, #compose-view {
+    flex-grow: 1;
+}
+.email-item {
+    text-decoration: none;
+    color: var(--primary-color);
+
+    transition: transform 0.2s;
+}
+.email-item:hover {
+    transform: translateX(24px);
+}
+
+/* Colors for emails that are read or unread */
+.email-unread {
+    background-color: var(--primary-bg-color);
+}
+.email-read {
+    background-color: var(--email-read-bg-color);
+}
+
+/*=== Compose Part ===*/
+.compose-form {
+    background-color: var(--primary-bg-color);
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+
+    overflow: hidden;   /* To hide those sharp rectangle corners from compose-header and compose-footer */
+}
+
+.compose-header {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+
+    padding: 1.1rem;
+
+    font-size: 1.5rem;
+    font-weight: 600;
+
+    background-color: var(--primary-color);
+    color: var(--primary-bg-color);
+}
+
+.compose-body {
+    padding: 1.1rem;
+
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    flex-grow: 1;
+}
+.compose-body .compose-fields {
+    display: grid;
+    grid-template-columns: max-content 1fr;     /* Only allows 2 columns per row (Label + Field) */
+    gap: 0.5rem 3rem;
+
+    align-items: center;
+}
+.compose-fields .compose-field {
+    background-color: transparent;
+    border: none;
+    border-bottom: 2px solid var(--form-input-border-color); 
+    border-radius: 0;
+    padding-left: 0;
+}
+.compose-body .compose-text {
+    background-color: transparent;
+    overflow-y: auto;
+    resize: none;
+    flex-grow: 1;
+    border: 2px solid var(--form-input-border-color);
+}
+.compose-field:focus, .compose-text:focus {
+    outline: none;
+    box-shadow: none;
+    border-color: var(--primary-color);
+}
+
+.compose-footer {
+    margin-top: auto;
+    padding: 1.1rem;
+
+    display: flex;
+    justify-content: space-between;
+}
+
+/* ===== FOR MOBILE SCREENS ===== */
+@media (max-width: 768px) {
+
+    /*=== Sidebar Part ===*/
+    .sidebar {
+        width: auto;
+    }
+    .sidebar-title {
+        display: none;
+    }
+    .nav-btn {
+        position: relative;
+    }
+
+    .nav-text {
+        opacity: 0;
+        position: absolute;
+
+        left: 100%;     /* Starts after icon size (64px) */
+        width: 0;
+        height: 100%;
+        margin: 0;
+        padding-left: 1rem;
+        overflow: hidden;       /* To hide 'nav-text' while the width is being expanded */
+
+        display: flex;
+        align-items: center;
+
+        transition: width 0.2s ease;
+    }
+    .nav-btn:hover {
+        .nav-text {
+            opacity: 1;
+            width: 128px;
+            background-color: var(--primary-hover-color);
+        }
+    }
+
+    /* .nav-btn:hover {
+        .nav-text {
+            animation-name: slideIn;
+            animation-duration: 0.3s;
+            animation-fill-mode: forwards;
+        }
+    }
+
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            width: 0;
+        }
+        to {
+            opacity: 1;
+            width: 128px;
+        }
+    } */
+}

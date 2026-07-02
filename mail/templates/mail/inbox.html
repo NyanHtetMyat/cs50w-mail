@@ -1,110 +1,109 @@
 {% extends "mail/layout.html" %}
 {% load static %}
 
+{% block style %}
+    <link rel="stylesheet" href="{% static 'mail/inbox.css' %}">
+{% endblock %}
+
 {% block body %}
+    <div class="dashboard-layout">
 
+        <aside class="sidebar">
+            <div class="sidebar-header d-flex flex-nowrap align-items-center p-3 border-bottom">
+                <svg id="e9dc84bb-e34b-4983-9a2d-6e5ca2f978d2" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><style>.bcf5b7ad-9c41-48c3-ac84-d5216a1c8ce5{fill:#ffcb60;}.b3f8ac07-1c47-4a73-b48e-54455ffbd2ed{fill:#7e61ff;}.ac9a4fe0-55db-4438-b547-4e73594171c0{fill:#ff5f7d;}.a8bc5fee-57d3-41b0-8c9c-4d1dbb57f653{fill:#5a3dbe;}.b75e3a70-7209-414a-b917-7915d3712a07{fill:#5fd7aa;}.b3ecf663-164b-4284-be6e-f100a8b1e8a6{fill:#3fb3a3;}.bd956965-f6be-4fcc-af49-295339a8b619{fill:#ff9c5b;}</style></defs><path class="bcf5b7ad-9c41-48c3-ac84-d5216a1c8ce5" d="M50,88.88913V100A49.67168,49.67168,0,0,1,14.64445,85.35586,50.17276,50.17276,0,0,1,6.68222,75.01164l9.64666-5.56877A38.90911,38.90911,0,0,0,50,88.88913Z"/><path class="b3f8ac07-1c47-4a73-b48e-54455ffbd2ed" d="M93.32074,24.99205l-9.64446,5.57027a38.91373,38.91373,0,0,0-33.674-19.45145V0A49.67164,49.67164,0,0,1,85.35778,14.64415,50.28143,50.28143,0,0,1,93.32074,24.99205Z"/><path class="ac9a4fe0-55db-4438-b547-4e73594171c0" d="M50.00224,0V11.11087a38.91355,38.91355,0,0,0-33.674,19.444L6.68373,24.98468a50.23912,50.23912,0,0,1,7.963-10.34053A49.6717,49.6717,0,0,1,50.00224,0Z"/><path class="a8bc5fee-57d3-41b0-8c9c-4d1dbb57f653" d="M100,50a49.858,49.858,0,0,1-4.17037,20.05186v.00737l-9.71852-5.61479A38.87822,38.87822,0,0,0,83.674,30.563l9.64445-5.57038A49.657,49.657,0,0,1,100,50Z"/><path class="b75e3a70-7209-414a-b917-7915d3712a07" d="M95.82963,70.05923a49.66822,49.66822,0,0,1-5.57039,9.60743L72.91106,69.65183A12.52309,12.52309,0,0,1,66.66667,58.8222V50.24441A16.66311,16.66311,0,0,0,35.5778,41.66667l-9.62963-5.563A27.7777,27.7777,0,0,1,77.77778,50v6.74072a5.02024,5.02024,0,0,0,2.49629,4.33336l5.837,3.37036Z"/><path class="b3ecf663-164b-4284-be6e-f100a8b1e8a6" d="M65.22967,73.22962A27.77829,27.77829,0,0,1,25.94817,36.1037l9.62963,5.563a16.54925,16.54925,0,0,0-2.19256,9.71851A16.71849,16.71849,0,0,0,50.26666,66.66667a14.47866,14.47866,0,0,0,3.25186-.31852,17.03968,17.03968,0,0,0,4.81481-1.926Z"/><polygon class="b75e3a70-7209-414a-b917-7915d3712a07" points="95.83 70.052 95.83 70.059 86.111 64.444 95.83 70.052"/><path class="bd956965-f6be-4fcc-af49-295339a8b619" d="M11.11111,50.00107a38.64293,38.64293,0,0,0,5.21777,19.4418L6.68222,75.01164a50.14459,50.14459,0,0,1,.00445-50.02782l9.64444,5.571A38.63851,38.63851,0,0,0,11.11111,50.00107Z"/></svg>
+                <h2 class="sidebar-title">FastMail</h2>
+            </div>
+            
+            <ul class="nav-items p-0 m-0">
+                <li class="nav-item">
+                    <button class="nav-btn" id="inbox">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-inbox-fill" viewBox="0 0 16 16">
+                            <path d="M4.98 4a.5.5 0 0 0-.39.188L1.54 8H6a.5.5 0 0 1 .5.5 1.5 1.5 0 1 0 3 0A.5.5 0 0 1 10 8h4.46l-3.05-3.812A.5.5 0 0 0 11.02 4zm-1.17-.437A1.5 1.5 0 0 1 4.98 3h6.04a1.5 1.5 0 0 1 1.17.563l3.7 4.625a.5.5 0 0 1 .106.374l-.39 3.124A1.5 1.5 0 0 1 14.117 13H1.883a1.5 1.5 0 0 1-1.489-1.314l-.39-3.124a.5.5 0 0 1 .106-.374z"/>
+                        </svg>
+                        <span class="nav-text">Inbox</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-btn" id="compose">
+                        <svg xmlns="http://www.w3.org/2000/svg"fill="currentColor" class="bi bi-envelope-plus" viewBox="0 0 16 16">
+                            <path d="M2 2a2 2 0 0 0-2 2v8.01A2 2 0 0 0 2 14h5.5a.5.5 0 0 0 0-1H2a1 1 0 0 1-.966-.741l5.64-3.471L8 9.583l7-4.2V8.5a.5.5 0 0 0 1 0V4a2 2 0 0 0-2-2zm3.708 6.208L1 11.105V5.383zM1 4.217V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v.217l-7 4.2z"/>
+                            <path d="M16 12.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0m-3.5-2a.5.5 0 0 0-.5.5v1h-1a.5.5 0 0 0 0 1h1v1a.5.5 0 0 0 1 0v-1h1a.5.5 0 0 0 0-1h-1v-1a.5.5 0 0 0-.5-.5"/>
+                        </svg>
+                        <span class="nav-text">Compose</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-btn" id="sent">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-send" viewBox="0 0 16 16">
+                            <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576zm6.787-8.201L1.591 6.602l4.339 2.76z"/>
+                        </svg>
+                        <span class="nav-text">Sent</span>
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-btn" id="archived">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-archive" viewBox="0 0 16 16">
+                            <path d="M0 2a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1v7.5a2.5 2.5 0 0 1-2.5 2.5h-9A2.5 2.5 0 0 1 1 12.5V5a1 1 0 0 1-1-1zm2 3v7.5A1.5 1.5 0 0 0 3.5 14h9a1.5 1.5 0 0 0 1.5-1.5V5zm13-3H1v2h14zM5 7.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5"/>
+                        </svg>
+                        <span class="nav-text">Archived</span>
+                    </button>
+                </li>
+                <li class="nav-item border-top mt-auto">
+                    <a class="nav-btn text-decoration-none" href="{% url 'logout' %}">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-box-arrow-left" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0z"/>
+                            <path fill-rule="evenodd" d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708z"/>
+                        </svg>
+                        <span class="nav-text">Logout</span>
+                    </a>
+                </li>
+            </ul>
+        </aside>
 
-    <aside class="sidebar">
-        <div class="sidebar-header d-flex flex-nowrap align-items-center p-3 border-bottom">
-            <img class="sidebar-brand" src="{% static 'mail/email-logo.svg' %}">
-            <h2 class="sidebar-title">Email</h2>
-        </div>
-        
-        <ul class="nav-items p-0 m-0">
-            <li class="nav-item">
-                <button class="nav-btn" id="inbox">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="nav-icon bi bi-inbox-fill" viewBox="0 0 16 16">
-                        <path d="M4.98 4a.5.5 0 0 0-.39.188L1.54 8H6a.5.5 0 0 1 .5.5 1.5 1.5 0 1 0 3 0A.5.5 0 0 1 10 8h4.46l-3.05-3.812A.5.5 0 0 0 11.02 4zm-1.17-.437A1.5 1.5 0 0 1 4.98 3h6.04a1.5 1.5 0 0 1 1.17.563l3.7 4.625a.5.5 0 0 1 .106.374l-.39 3.124A1.5 1.5 0 0 1 14.117 13H1.883a1.5 1.5 0 0 1-1.489-1.314l-.39-3.124a.5.5 0 0 1 .106-.374z"/>
-                    </svg>
-                    <span class="nav-text">Inbox</span>
-                </button>
-            </li>
-            <li class="nav-item">
-                <button class="nav-btn" id="compose">
-                    <!-- <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="nav-icon bi bi-envelope-plus-fill" viewBox="0 0 16 16">
-                        <path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414zM0 4.697v7.104l5.803-3.558zM6.761 8.83l-6.57 4.026A2 2 0 0 0 2 14h6.256A4.5 4.5 0 0 1 8 12.5a4.49 4.49 0 0 1 1.606-3.446l-.367-.225L8 9.586zM16 4.697v4.974A4.5 4.5 0 0 0 12.5 8a4.5 4.5 0 0 0-1.965.45l-.338-.207z"/>
-                        <path d="M16 12.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0m-3.5-2a.5.5 0 0 0-.5.5v1h-1a.5.5 0 0 0 0 1h1v1a.5.5 0 0 0 1 0v-1h1a.5.5 0 0 0 0-1h-1v-1a.5.5 0 0 0-.5-.5"/>
-                    </svg> -->
-                    <svg xmlns="http://www.w3.org/2000/svg"fill="currentColor" class="nav-icon bi bi-envelope-plus" viewBox="0 0 16 16">
-                        <path d="M2 2a2 2 0 0 0-2 2v8.01A2 2 0 0 0 2 14h5.5a.5.5 0 0 0 0-1H2a1 1 0 0 1-.966-.741l5.64-3.471L8 9.583l7-4.2V8.5a.5.5 0 0 0 1 0V4a2 2 0 0 0-2-2zm3.708 6.208L1 11.105V5.383zM1 4.217V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v.217l-7 4.2z"/>
-                        <path d="M16 12.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0m-3.5-2a.5.5 0 0 0-.5.5v1h-1a.5.5 0 0 0 0 1h1v1a.5.5 0 0 0 1 0v-1h1a.5.5 0 0 0 0-1h-1v-1a.5.5 0 0 0-.5-.5"/>
-                    </svg>
-                    <span class="nav-text">Compose</span>
-                </button>
-            </li>
-            <li class="nav-item">
-                <button class="nav-btn" id="sent">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="nav-icon bi bi-send" viewBox="0 0 16 16">
-                        <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576zm6.787-8.201L1.591 6.602l4.339 2.76z"/>
-                    </svg>
-                    <span class="nav-text">Sent</span>
-                </button>
-            </li>
-            <li class="nav-item">
-                <button class="nav-btn" id="archived">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="nav-icon bi bi-archive" viewBox="0 0 16 16">
-                        <path d="M0 2a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1v7.5a2.5 2.5 0 0 1-2.5 2.5h-9A2.5 2.5 0 0 1 1 12.5V5a1 1 0 0 1-1-1zm2 3v7.5A1.5 1.5 0 0 0 3.5 14h9a1.5 1.5 0 0 0 1.5-1.5V5zm13-3H1v2h14zM5 7.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5"/>
-                    </svg>
-                    <span class="nav-text">Archived</span>
-                </button>
-            </li>
-            <li class="nav-item border-top mt-auto">
-                <a class="nav-btn text-decoration-none" href="{% url 'logout' %}">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="nav-icon bi bi-box-arrow-left" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0z"/>
-                        <path fill-rule="evenodd" d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708z"/>
-                    </svg>
-                    <span class="nav-text">Logout</span>
-                </a>
-            </li>
-        </ul>
-    </aside>
+        <header class="header p-4 border-bottom">
+            <div id="email-box-title"></div>
+            <h4>{{ request.user.email }}</h4>
+        </header>
 
-    <header class="header p-4 border-bottom">
-        <div id="email-box-title"></div>
-        <h4>{{ request.user.email }}</h4>
-    </header>
+        <main class="main p-4">
+            <div class="container" id="emails-view">
+            </div>
 
-    <main class="main p-4">
+            <div class="" id="compose-view">
+                <form class="compose-form rounded-4" id="compose-form">
 
-        <div class="container" id="emails-view">
-        </div>
-
-        <div class="" id="compose-view">
-            <form class="compose-form rounded-4" id="compose-form">
-
-                <div class="compose-header">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-envelope-at-fill" viewBox="0 0 16 16">
-                        <path d="M2 2A2 2 0 0 0 .05 3.555L8 8.414l7.95-4.859A2 2 0 0 0 14 2zm-2 9.8V4.698l5.803 3.546zm6.761-2.97-6.57 4.026A2 2 0 0 0 2 14h6.256A4.5 4.5 0 0 1 8 12.5a4.49 4.49 0 0 1 1.606-3.446l-.367-.225L8 9.586zM16 9.671V4.697l-5.803 3.546.338.208A4.5 4.5 0 0 1 12.5 8c1.414 0 2.675.652 3.5 1.671"/>
-                        <path d="M15.834 12.244c0 1.168-.577 2.025-1.587 2.025-.503 0-1.002-.228-1.12-.648h-.043c-.118.416-.543.643-1.015.643-.77 0-1.259-.542-1.259-1.434v-.529c0-.844.481-1.4 1.26-1.4.585 0 .87.333.953.63h.03v-.568h.905v2.19c0 .272.18.42.411.42.315 0 .639-.415.639-1.39v-.118c0-1.277-.95-2.326-2.484-2.326h-.04c-1.582 0-2.64 1.067-2.64 2.724v.157c0 1.867 1.237 2.654 2.57 2.654h.045c.507 0 .935-.07 1.18-.18v.731c-.219.1-.643.175-1.237.175h-.044C10.438 16 9 14.82 9 12.646v-.214C9 10.36 10.421 9 12.485 9h.035c2.12 0 3.314 1.43 3.314 3.034zm-4.04.21v.227c0 .586.227.8.581.8.31 0 .564-.17.564-.743v-.367c0-.516-.275-.708-.572-.708-.346 0-.573.245-.573.791"/>
-                    </svg>
-                    <label>From : </label>
-                    <span>{{ request.user.email }}</span>
-                </div>
-
-                <div class="compose-body">
-                    <!-- This class is for "Label: Field" Grid Layout for the two below fields -->
-                    <div class="compose-fields">
-                        <label for="compose-recipients">To</label>
-                        <input class="form-control" id="compose-recipients" autocomplete="off">
-
-                        <label for="compose-subject">Subject</label>
-                        <input class="form-control" id="compose-subject" autocomplete="off">
+                    <div class="compose-header">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-envelope-at-fill" viewBox="0 0 16 16">
+                            <path d="M2 2A2 2 0 0 0 .05 3.555L8 8.414l7.95-4.859A2 2 0 0 0 14 2zm-2 9.8V4.698l5.803 3.546zm6.761-2.97-6.57 4.026A2 2 0 0 0 2 14h6.256A4.5 4.5 0 0 1 8 12.5a4.49 4.49 0 0 1 1.606-3.446l-.367-.225L8 9.586zM16 9.671V4.697l-5.803 3.546.338.208A4.5 4.5 0 0 1 12.5 8c1.414 0 2.675.652 3.5 1.671"/>
+                            <path d="M15.834 12.244c0 1.168-.577 2.025-1.587 2.025-.503 0-1.002-.228-1.12-.648h-.043c-.118.416-.543.643-1.015.643-.77 0-1.259-.542-1.259-1.434v-.529c0-.844.481-1.4 1.26-1.4.585 0 .87.333.953.63h.03v-.568h.905v2.19c0 .272.18.42.411.42.315 0 .639-.415.639-1.39v-.118c0-1.277-.95-2.326-2.484-2.326h-.04c-1.582 0-2.64 1.067-2.64 2.724v.157c0 1.867 1.237 2.654 2.57 2.654h.045c.507 0 .935-.07 1.18-.18v.731c-.219.1-.643.175-1.237.175h-.044C10.438 16 9 14.82 9 12.646v-.214C9 10.36 10.421 9 12.485 9h.035c2.12 0 3.314 1.43 3.314 3.034zm-4.04.21v.227c0 .586.227.8.581.8.31 0 .564-.17.564-.743v-.367c0-.516-.275-.708-.572-.708-.346 0-.573.245-.573.791"/>
+                        </svg>
+                        <label>From : </label>
+                        <span>{{ request.user.email }}</span>
                     </div>
 
-                    <textarea class="form-control" id="compose-body" placeholder="Body..."></textarea>
-                </div>
+                    <div class="compose-body">
+                        <!-- This class is for "Label: Field" Grid Layout for the two below fields -->
+                        <div class="compose-fields">
+                            <label for="compose-recipients">To</label>
+                            <input class="compose-field form-control" id="compose-recipients" autocomplete="off">
 
-                <div class="compose-footer">
-                   <button type="submit" class="btn btn-primary px-4 rounded-pill">Send</button>
-                   <button type="button" class="btn btn-danger px-4 rounded-pill" id="compose-reset">Reset</button>
-                </div>
+                            <label for="compose-subject">Subject</label>
+                            <input class="compose-field form-control" id="compose-subject" autocomplete="off">
+                        </div>
 
-            </form>
-        </div>
+                        <textarea class="compose-text form-control" id="compose-body" placeholder="Body..."></textarea>
+                    </div>
 
-    </main>
+                    <div class="compose-footer">
+                    <button type="submit" class="btn btn-primary px-4 rounded-pill">Send</button>
+                    <button type="button" class="btn btn-danger px-4 rounded-pill" id="compose-reset">Reset</button>
+                    </div>
 
+                </form>
+            </div>
+        </main>
+    
+    </div>
 {% endblock %}
 
 {% block script %}
