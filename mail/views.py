@@ -131,8 +131,8 @@ def login_view(request):
     if request.method == "POST":
 
         # Attempt to sign user in
-        email = request.POST["email"]
-        password = request.POST["password"]
+        email = request.POST.get("email", "").strip()
+        password = request.POST.get("password", "").strip()
         user = authenticate(request, username=email, password=password)
 
         # Check if authentication successful
@@ -154,11 +154,17 @@ def logout_view(request):
 
 def register(request):
     if request.method == "POST":
-        email = request.POST["email"]
+        email = request.POST.get("email", "").strip()
+        password = request.POST.get("password", "").strip()
+        confirmation = request.POST.get("confirmation", "").strip()
+
+        # Ensure all fields aren't empty
+        if not (email or password or confirmation):
+            return render(request, "mail/register.html", {
+                "message": "Please fill out all fields."
+            })
 
         # Ensure password matches confirmation
-        password = request.POST["password"]
-        confirmation = request.POST["confirmation"]
         if password != confirmation:
             return render(request, "mail/register.html", {
                 "message": "Passwords must match."
