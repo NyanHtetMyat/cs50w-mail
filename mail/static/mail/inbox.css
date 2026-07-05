@@ -85,7 +85,7 @@
 }
 
 /*=== Inbox, Sent, Archived Parts ===*/
-#emails-view, #compose-view {
+#emails-view, #compose-view, #email-details-view {
     flex-grow: 1;
 }
 .email-item {
@@ -106,8 +106,8 @@
     background-color: var(--email-read-bg-color);
 }
 
-/*=== Compose Part ===*/
-.compose-form {
+/*=== Compose Part (Some styles are reused in 'email-details-view') ===*/
+.compose-form, .email-details-card {
     background-color: var(--primary-bg-color);
     height: 100%;
 
@@ -117,7 +117,7 @@
     overflow: hidden;   /* To hide those sharp rectangle corners from compose-header and compose-footer */
 }
 
-.compose-header {
+.compose-header, .email-header {
     display: flex;
     align-items: center;
     gap: 1.5rem;
@@ -131,7 +131,7 @@
     color: var(--primary-bg-color);
 }
 
-.compose-body {
+.compose-body, .email-body {
     padding: 1.1rem;
 
     display: flex;
@@ -139,40 +139,48 @@
     gap: 2rem;
     flex-grow: 1;
 }
-.compose-body .compose-fields {
+.compose-fields, .email-fields {
     display: grid;
     grid-template-columns: max-content 1fr;     /* Only allows 2 columns per row (Label + Field) */
     gap: 0.5rem 3rem;
 
     align-items: center;
 }
-.compose-fields .compose-field {
-    background-color: transparent;
+.compose-field, .email-field {
+    /* background-color: transparent; */
     border: none;
     border-bottom: 2px solid var(--form-input-border-color); 
     border-radius: 0;
     padding-left: 0;
 }
-.compose-body .compose-text {
-    background-color: transparent;
+.compose-text, #email-text {
+    /* background-color: transparent; */
     overflow-y: auto;
     resize: none;
     flex-grow: 1;
+}
+.compose-text-bordered {
     border: 2px solid var(--form-input-border-color);
 }
-.compose-field:focus, .compose-text:focus {
+/* .compose-field:focus, .compose-text:focus {
+    background-color: transparent;
     outline: none;
     box-shadow: none;
     border-color: var(--primary-color);
-}
+} */
 
-.compose-footer {
-    margin-top: auto;
-    padding: 1.1rem;
+.compose-footer, .email-footer {
+    padding: 0 1.1rem 1.1rem 1.1rem;
 
     display: flex;
     justify-content: space-between;
 }
+
+/*=== Email Render Part (Some styles are reused from ('compose-view') ===*/
+#email-details-view {
+    border: 1px soild red;
+}
+
 
 /* ===== FOR MOBILE SCREENS ===== */
 @media (max-width: 768px) {

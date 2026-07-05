@@ -23,6 +23,16 @@ svg {
     height: 32px;
 }
 
+/* ===== OVERWRITE BOOTSTRAP'S DEFAULT STYLINGS ===== */
+.form-control {
+    background-color: transparent;
+}
+.form-control:focus {
+    background-color: transparent;
+    outline: none;
+    box-shadow: none;
+    border-color: var(--primary-color);
+}
 
 /* ===== TESTING PURPOSES ===== */
 .border-red {

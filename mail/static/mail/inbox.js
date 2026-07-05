@@ -9,41 +9,66 @@ document.addEventListener('DOMContentLoaded', function() {
   // By default, load the inbox
   load_mailbox('inbox');
 
-  // AJAX Backend Logics
-  document.getElementById("compose-form").addEventListener('submit', compose_view);
+  // FORM/ LINK LISTENERS
+  document.querySelector("#compose-form").addEventListener('submit', compose_submit);
+  document.querySelector("#emails-view").addEventListener('click', event => {
+    // Look upwards DOM for <a> with '.email-item' class
+    const email_item = event.target.closest(".email-item")
 
-  // Other Buttons
+    // if exists, prevent actual redirect and pass the element
+    if (email_item) {
+      event.preventDefault();
+      load_email(email_item);
+    }
+  });
+
+  // OTHER BUTTONS
   document.querySelector("#compose-reset").addEventListener('click', compose_form_reset);
 });
 
 
-/*===== VIEW FUNCTIONS =====*/
+/* ===== VIEW FUNCTIONS ===== */
 function compose_email() {
   // Show compose view and hide other views
   document.querySelector('#emails-view').style.display = 'none';
   document.querySelector('#compose-view').style.display = 'block';
+  document.querySelector('#email-details-view').style.display = 'none';
 
+  // Show Page title
+  document.querySelector('#email-box-title').innerHTML = `<h2>New Email</h2>`;
+  
   // Clear out composition fields
   compose_form_reset();
-
-  // Show the mailbox name
-  document.querySelector('#email-box-title').innerHTML = `<h2>New Email</h2>`;
 }
 
 function load_mailbox(mailbox) {
   // Show the mailbox and hide other views
   document.querySelector('#emails-view').style.display = 'block';
   document.querySelector('#compose-view').style.display = 'none';
+  document.querySelector('#email-details-view').style.display = 'none';
 
-  // Show the mailbox name
+  // Show Page title as mailbox name
   document.querySelector('#email-box-title').innerHTML = `<h2>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h2>`;
 
   // Loads the actual emails
-  mailbox_view(mailbox);
+  render_mails(mailbox);
+}
+
+function load_email(email_item) {
+  // Show a single email details and hide other views
+  document.querySelector('#emails-view').style.display = 'none';
+  document.querySelector('#compose-view').style.display = 'none';
+  document.querySelector('#email-details-view').style.display = 'block';
+
+  // Show Page title
+  document.querySelector('#email-box-title').innerHTML = `<h2>Viewing an Email</h2>`;
+
+  // Loads the actual email
+  render_single_email(email_item);
 }
 
 
-/*===== UTILITY FUNCTIONS =====*/
+/* ===== UTILITY FUNCTIONS ===== */
 function compose_form_reset() {
   document.querySelector('#compose-recipients').value = '';
   document.querySelector('#compose-subject').value = '';
@@ -51,13 +76,14 @@ function compose_form_reset() {
 }
 
 
-/*===== AJAX FUNCTIONS =====*/
+/* ===== AJAX FUNCTIONS ===== */
 
 /* Logic for composing email */
-async function compose_view(event) {
+async function compose_submit(event) {
   // Prevent actual form submission
   event.preventDefault();
 
+  // POST the email to the server
   try {
     const response = await fetch("/emails", {
       method: "POST",
@@ -68,23 +94,22 @@ async function compose_view(event) {
       })
     });
     const data = await response.json();
-
+      
     // Output Success Message to console
     console.log(data.message);
-
-    // Hide Compose View and Show Inbox
-    load_mailbox('inbox');
   }
   catch (error) {
     console.log(`Error: ${error.message}`);
+    return;
   }
+  // Hide Compose View and Show Inbox
+  load_mailbox('inbox');
 }
 
 /* Logic for rendering emails */
-async function mailbox_view(mailbox) {
+async function render_mails(mailbox) {
   let emails = [];
-
-  // Fetches the emails from backend
+  // GET the corresponding emails from server
   try {
     const response = await fetch(`/emails/${mailbox}`);
     emails = await response.json();
@@ -94,15 +119,20 @@ async function mailbox_view(mailbox) {
     return;
   }
 
-  // Get the email container and empty it
+  // Get the email container and empty it (else, rendered emails will become duplicate)
   emails_container = document.getElementById("emails-view");
-  emails_container.innerHTML = ""
+  emails_container.innerHTML = "";
 
   // Insert each email to the container
   emails.forEach(email => {
-    // Create a Parent Element (Row)
+    // Create a Parent Element <a> with (row)
     email_element = document.createElement('a');
-    email_element.href = `/emails/${email.id}`;
+    email_element.dataset.emailId = email.id;
+    email_element.href = `/emails/${email.id}`;   // Just for flavour, will not actually redirect
+
+    // Attach event listener to each email_element generated
+    // email_element.addEventListener('click', render_single_email)
+
     const classes = [
       "row",
       "flex-nowrap",
@@ -114,7 +144,7 @@ async function mailbox_view(mailbox) {
     ];
     email_element.classList.add(...classes);  
 
-    // Add Child Elements (Col)
+    // Add Child Elements (col)
     email_element.innerHTML = `
       <div class="col-auto border-end">
           <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-envelope" viewBox="0 0 16 16">
@@ -135,4 +165,27 @@ async function mailbox_view(mailbox) {
     `
     emails_container.append(email_element);
   });
+}
+
+/* Logic for viewing a specific mail */
+async function render_single_email(email_item) {
+  let email = {};
+  // GET the clicked email-element's details from server
+  try {
+    const response = await fetch(`emails/${email_item.dataset.emailId}`);
+    email = await response.json();
+  }
+  catch (error) {
+    console.log(`Error: ${error.message}`);
+    return;
+  }
+
+  // Output to console
+  console.log(email);
+
+  // Add the values to HTML
+  document.querySelector("#email-sender").innerText = email.sender;
+  document.querySelector("#email-recipients").innerText = email.recipients.join(", ");
+  document.querySelector("#email-subject").innerText = email.subject;
+  document.querySelector("#email-text").innerText = email.body;
 }
