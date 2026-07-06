@@ -61,6 +61,16 @@ p {
     color: red;
 }
  
+
+/* ===== FOR MOBILE SCREENS ===== */
+@media (max-width: 768px) {
+    svg {
+        width: 24px;
+        height: 24px;
+    }
+}
+
+
 /* ===== TESTING PURPOSES ===== */
 .border-red {
     border: 1px solid red;
