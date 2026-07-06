@@ -28,6 +28,16 @@ p {
     margin-bottom: 0;
 }
 
+.btn-primary {
+    color: var(--primary-bg-color);
+    border-color: var(--primary-color);
+    background-color: var(--primary-color);
+}
+.btn-primary:hover, .btn-primary:active {
+    border-color: var(--primary-hover-color) !important;
+    background-color: var(--primary-hover-color) !important;
+}
+
 .form-control {
     background-color: transparent;
 }
@@ -38,6 +48,19 @@ p {
     border-color: var(--primary-color);
 }
 
+/* ===== UTILITY CLASSES ===== */
+.btn-icon {
+    border: none;
+    transition: transform 0.2s ease;
+}
+.btn-icon:hover {
+    transform: scale(1.1);
+}
+
+.text-red {
+    color: red;
+}
+ 
 /* ===== TESTING PURPOSES ===== */
 .border-red {
     border: 1px solid red;

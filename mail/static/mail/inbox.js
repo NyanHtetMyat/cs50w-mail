@@ -180,7 +180,7 @@ async function render_single_email(email_item) {
     return;
   }
 
-  // Output to console
+  // Output Email to console
   console.log(email);
 
   // Add the values to HTML
@@ -189,4 +189,21 @@ async function render_single_email(email_item) {
   document.querySelector("#email-timestamp").innerText = email.timestamp;
   document.querySelector("#email-subject").innerText = email.subject;
   document.querySelector("#email-text").innerText = email.body;
+
+  // PUT 'read' status
+  try {
+    await fetch(`/emails/${email.id}`, {
+      method: "PUT",
+      body: JSON.stringify({
+        'read': true,
+      })
+    });
+
+    // Output Success Message to console
+    console.log("Read Status Updated.");
+  }
+  catch (error) {
+    console.log(`Error: ${error.message}`);
+    return;
+  }
 }

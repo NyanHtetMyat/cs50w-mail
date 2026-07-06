@@ -53,13 +53,13 @@
 }
 .auth-body button {
     width: 100%;
-    border: none;
+    /* border: none;
     background-color: var(--primary-color);
-    color: var(--primary-bg-color);
+    color: var(--primary-bg-color); */
 }
-.auth-body button:hover {
+/* .auth-body button:hover {
     background-color: var(--primary-hover-color);
-}
+} */
 
 .auth-footer {
     text-align: center;
