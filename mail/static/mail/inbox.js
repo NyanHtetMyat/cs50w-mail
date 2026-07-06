@@ -61,7 +61,7 @@ function load_email(email_item) {
   document.querySelector('#email-details-view').style.display = 'block';
 
   // Show Page title
-  document.querySelector('#email-box-title').innerHTML = `<h2>Viewing an Email</h2>`;
+  document.querySelector('#email-box-title').innerHTML = `<h2>Viewing Email</h2>`;
 
   // Loads the actual email
   render_single_email(email_item);
@@ -186,6 +186,7 @@ async function render_single_email(email_item) {
   // Add the values to HTML
   document.querySelector("#email-sender").innerText = email.sender;
   document.querySelector("#email-recipients").innerText = email.recipients.join(", ");
+  document.querySelector("#email-timestamp").innerText = email.timestamp;
   document.querySelector("#email-subject").innerText = email.subject;
   document.querySelector("#email-text").innerText = email.body;
 }

@@ -106,8 +106,8 @@
     background-color: var(--email-read-bg-color);
 }
 
-/*=== Compose Part (Some styles are reused in 'email-details-view') ===*/
-.compose-form, .email-details-card {
+/*=== Compose and Single Email Render Part ===*/
+.email-details {
     background-color: var(--primary-bg-color);
     height: 100%;
 
@@ -117,7 +117,7 @@
     overflow: hidden;   /* To hide those sharp rectangle corners from compose-header and compose-footer */
 }
 
-.compose-header, .email-header {
+.email-details__header {
     display: flex;
     align-items: center;
     gap: 1.5rem;
@@ -131,54 +131,43 @@
     color: var(--primary-bg-color);
 }
 
-.compose-body, .email-body {
+.email-details__body {
+    flex-grow: 1;
     padding: 1.1rem;
 
     display: flex;
     flex-direction: column;
-    gap: 2rem;
-    flex-grow: 1;
+    /* gap: 2rem; */
 }
-.compose-fields, .email-fields {
+.email-details__fields {
     display: grid;
     grid-template-columns: max-content 1fr;     /* Only allows 2 columns per row (Label + Field) */
     gap: 0.5rem 3rem;
 
     align-items: center;
 }
-.compose-field, .email-field {
+.email-details__field {
     /* background-color: transparent; */
     border: none;
     border-bottom: 2px solid var(--form-input-border-color); 
     border-radius: 0;
-    padding-left: 0;
+    padding: 6px 12px 6px 0;
 }
-.compose-text, #email-text {
+.email-details__text {
     /* background-color: transparent; */
     overflow-y: auto;
     resize: none;
     flex-grow: 1;
 }
-.compose-text-bordered {
+.email-details__text--bordered {
     border: 2px solid var(--form-input-border-color);
 }
-/* .compose-field:focus, .compose-text:focus {
-    background-color: transparent;
-    outline: none;
-    box-shadow: none;
-    border-color: var(--primary-color);
-} */
 
-.compose-footer, .email-footer {
+.email-details__footer {
     padding: 0 1.1rem 1.1rem 1.1rem;
 
     display: flex;
     justify-content: space-between;
-}
-
-/*=== Email Render Part (Some styles are reused from ('compose-view') ===*/
-#email-details-view {
-    border: 1px soild red;
 }
 
 

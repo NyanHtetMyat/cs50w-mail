@@ -24,6 +24,10 @@ svg {
 }
 
 /* ===== OVERWRITE BOOTSTRAP'S DEFAULT STYLINGS ===== */
+p {
+    margin-bottom: 0;
+}
+
 .form-control {
     background-color: transparent;
 }
