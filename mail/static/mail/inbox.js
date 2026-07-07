@@ -9,20 +9,20 @@ document.addEventListener('DOMContentLoaded', function() {
   // By default, load the inbox
   load_mailbox('inbox');
 
-  // FORM/ LINK LISTENERS
+  /*=== FORM/ LINK LISTENERS ===*/
   document.querySelector("#compose-form").addEventListener('submit', compose_submit);
-  document.querySelector("#emails-view").addEventListener('click', event => {
-    // Look upwards DOM for <a> with '.email-item' class
-    const email_item = event.target.closest(".email-item")
+  document.querySelector("#email-archive-unarchive").addEventListener('click', toggle_archive);
 
-    // if exists, prevent actual redirect and pass the element
+  // Attach listener to the parent container (cuz the email list has dozens of emails)
+  document.querySelector("#emails-view").addEventListener('click', event => {
+    const email_item = event.target.closest(".email-item")    // Look upwards DOM for <a> with '.email-item' class
     if (email_item) {
       event.preventDefault();
       load_email(email_item);
     }
   });
 
-  // OTHER BUTTONS
+  /*=== OTHER BUTTONS ===*/
   document.querySelector("#compose-reset").addEventListener('click', compose_form_reset);
 });
 
@@ -81,7 +81,7 @@ function compose_form_reset() {
 
 /* ===== AJAX FUNCTIONS ===== */
 
-/* Logic for composing email */
+/*=== Logic for composing email ===*/
 async function compose_submit(event) {
   // Prevent actual form submission
   event.preventDefault();
@@ -109,7 +109,7 @@ async function compose_submit(event) {
   load_mailbox('inbox');
 }
 
-/* Logic for rendering emails */
+/*=== Logic for rendering emails ===*/
 async function render_mails(mailbox) {
   let emails = [];
   // GET the corresponding emails from server
@@ -170,7 +170,7 @@ async function render_mails(mailbox) {
   });
 }
 
-/* Logic for viewing a specific mail */
+/*=== Logic for viewing a specific mail ===*/
 async function render_single_email(email_item) {
   let email = {};
   // GET the clicked email-element's details from server
@@ -183,6 +183,9 @@ async function render_single_email(email_item) {
     return;
   }
 
+  // Add ID to 'email-details-card' to access it in 'toggle_archive()' later
+  document.querySelector('#email-details-card').dataset.emailId = email.id;
+
   // Add the values to HTML
   document.querySelector("#email-sender").innerText = email.sender;
   document.querySelector("#email-recipients").innerText = email.recipients.join(", ");
@@ -190,11 +193,9 @@ async function render_single_email(email_item) {
   document.querySelector("#email-subject").innerText = email.subject;
   document.querySelector("#email-text").innerText = email.body;
 
-  // Get the current user's email (Stored in Header Part of the layout)
+  // For showing/hiding 'Archive' button depending on mailbox (Logged in user's email is stored in Header Part of the layout)
   const currentUserEmail = document.querySelector("#user-email").dataset.userEmail;
-  const button = document.querySelector("#email-dynamic-button");
-
-  // If selected email is from 'sent' mailbox, hide the button
+  const button = document.querySelector("#email-archive-unarchive");
   if (email.sender === currentUserEmail) {
     button.classList.add('d-none');     // Apparently, style.display = 'none' did not work.
     button.classList.remove('d-flex');
@@ -237,4 +238,37 @@ async function render_single_email(email_item) {
       return;
     } 
   }
+}
+
+
+/* Logic for toggling archive button */
+async function toggle_archive() {
+  let email = {};
+
+  // GET the clicked email-element's details from server
+  try {
+    const response = await fetch(`emails/${document.querySelector('#email-details-card').dataset.emailId}`);
+    email = await response.json();
+  }
+  catch (error) {
+    console.log(`Error: ${error.message}`);
+    return;
+  }
+
+  // Toggle Logic
+  try {
+    await fetch(`/emails/${email.id}`, {
+      method: "PUT",
+      body: JSON.stringify({
+        'archived': !email.archived,
+      })
+    });
+  }
+  catch (error) {
+    console.log(`Error: ${error.message}`);
+    return;
+  }
+
+  // Redirect to Inbox
+  load_mailbox('inbox');
 }
