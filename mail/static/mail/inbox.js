@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
   /*=== FORM/ LINK LISTENERS ===*/
   document.querySelector("#compose-form").addEventListener('submit', compose_submit);
   document.querySelector("#email-archive-unarchive").addEventListener('click', toggle_archive);
+  document.querySelector("#email-reply").addEventListener('click', email_reply);
 
   // Attach listener to the parent container (cuz the email list has dozens of emails)
   document.querySelector("#emails-view").addEventListener('click', event => {
@@ -78,8 +79,22 @@ function compose_form_reset() {
   document.querySelector('#compose-text').value = '';
 }
 
+// async function get_email_details(email_id) {
+//   let email = {};
+//   try {
+//     const response = await fetch(`emails/${email_id}`);
+//     email = await response.json();
+//   }
+//   catch (error) {
+//     console.log(`Error: ${error.message}`);
+//     return;
+//   }
 
-/* ===== AJAX FUNCTIONS ===== */
+//   return email;
+// }
+
+
+/* ===== CORE LOGICS ===== */
 
 /*=== Logic for composing email ===*/
 async function compose_submit(event) {
@@ -183,7 +198,7 @@ async function render_single_email(email_item) {
     return;
   }
 
-  // Add ID to 'email-details-card' to access it in 'toggle_archive()' later
+  // Add EMAIL-ID to the parent card (ID will be used by toggle-archive and email-reply)
   document.querySelector('#email-details-card').dataset.emailId = email.id;
 
   // Add the values to HTML
@@ -241,10 +256,9 @@ async function render_single_email(email_item) {
 }
 
 
-/* Logic for toggling archive button */
+/*=== Logic for toggling archive button ===*/
 async function toggle_archive() {
   let email = {};
-
   // GET the clicked email-element's details from server
   try {
     const response = await fetch(`emails/${document.querySelector('#email-details-card').dataset.emailId}`);
@@ -271,4 +285,33 @@ async function toggle_archive() {
 
   // Redirect to Inbox
   load_mailbox('inbox');
+}
+
+
+/*=== Logic for replying email ===*/
+async function email_reply() {
+  
+  // GET email details
+  // const email = await get_email_details(document.querySelector('#email-details-card').dataset.emailId);
+
+  // console.log(email);
+
+  // Take the user to Compose Form
+  compose_email();
+
+  let email = {};
+  // GET the clicked email-element's details from server
+  try {
+    const response = await fetch(`emails/${document.querySelector('#email-details-card').dataset.emailId}`);
+    email = await response.json();
+  }
+  catch (error) {
+    console.log(`Error: ${error.message}`);
+    return;
+  }
+
+  // Add the values to HTML 
+  document.querySelector('#compose-recipients').value = email.sender;
+  document.querySelector('#compose-subject').value = (email.subject.startsWith("Re: ")) ? email.subject : `Re: ${email.subject}`;
+  document.querySelector('#compose-text').value = `On ${email.timestamp} ${email.sender} wrote: \n${email.body}`;
 }
