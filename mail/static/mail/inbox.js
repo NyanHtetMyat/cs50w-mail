@@ -79,19 +79,16 @@ function compose_form_reset() {
   document.querySelector('#compose-text').value = '';
 }
 
-// async function get_email_details(email_id) {
-//   let email = {};
-//   try {
-//     const response = await fetch(`emails/${email_id}`);
-//     email = await response.json();
-//   }
-//   catch (error) {
-//     console.log(`Error: ${error.message}`);
-//     return;
-//   }
+async function get_email_details(email_id) {
+  const response = await fetch(`emails/${email_id}`);
+  const data = await response.json();
 
-//   return email;
-// }
+  // For errors of 404 or 500
+  if (!response.ok)
+    throw new Error(data.error || "Something went wrong.");
+
+  return data;
+}
 
 
 /* ===== CORE LOGICS ===== */
@@ -107,17 +104,22 @@ async function compose_submit(event) {
       method: "POST",
       body: JSON.stringify({
         'recipients': document.getElementById('compose-recipients').value,
-        'subject': document.getElementById('compose-subject').value,
+        'subject': document.getElementById('compose-subject').value.trim() || "(No Subject)",
         'body': document.getElementById('compose-text').value
       })
     });
+    
     const data = await response.json();
-      
-    // Output Success Message to console
-    console.log(data.message);
+    
+    // For errors of 404 or 500
+    if (!response.ok)
+      throw new Error(data.error);
+
+    // Show Success Message
+    alert(data.message);
   }
   catch (error) {
-    console.log(`Error: ${error.message}`);
+    alert(`Error Sending Email: ${error.message}`);
     return;
   }
   // Hide Compose View and Show Inbox
@@ -133,18 +135,24 @@ async function render_mails(mailbox) {
     emails = await response.json();
   }
   catch (error) {
-    console.log(`Error: ${error.message}`);
+    alert(`Error Loading ${mailbox}: ${error.message}`);
     return;
   }
 
   // Get the email container and empty it (else, rendered emails will become duplicate)
-  emails_container = document.getElementById("emails-view");
+  const emails_container = document.getElementById("emails-view");
   emails_container.innerHTML = "";
+
+  // Check for empty emails
+  if (!emails.length) {
+    emails_container.innerHTML = `<h4 class="text-center text-muted">Nothing to see here :(</h4>`;
+    return;
+  }
 
   // Insert each email to the container
   emails.forEach(email => {
     // Create a Parent Element <a> with (row)
-    email_element = document.createElement('a');
+    const email_element = document.createElement('a');
     email_element.dataset.emailId = email.id;
     email_element.href = `/emails/${email.id}`;   // Just for flavour, will not actually redirect
 
@@ -160,7 +168,7 @@ async function render_mails(mailbox) {
       "email-item",
       email.read ? "email-read" : "email-unread",
     ];
-    email_element.classList.add(...classes);  
+    email_element.classList.add(...classes);
 
     // Add Child Elements (col)
     email_element.innerHTML = `
@@ -187,14 +195,13 @@ async function render_mails(mailbox) {
 
 /*=== Logic for viewing a specific mail ===*/
 async function render_single_email(email_item) {
+  // GET email details from server
   let email = {};
-  // GET the clicked email-element's details from server
   try {
-    const response = await fetch(`emails/${email_item.dataset.emailId}`);
-    email = await response.json();
+    email = await get_email_details(email_item.dataset.emailId);
   }
   catch (error) {
-    console.log(`Error: ${error.message}`);
+    alert(`Error Fetching Email Details: ${error.message}`);
     return;
   }
 
@@ -249,7 +256,7 @@ async function render_single_email(email_item) {
       });
     }
     catch (error) {
-      console.log(`Error: ${error.message}`);
+      alert(`Error Updating Read Status: ${error.message}`);
       return;
     } 
   }
@@ -258,14 +265,13 @@ async function render_single_email(email_item) {
 
 /*=== Logic for toggling archive button ===*/
 async function toggle_archive() {
+  // GET email details from server
   let email = {};
-  // GET the clicked email-element's details from server
   try {
-    const response = await fetch(`emails/${document.querySelector('#email-details-card').dataset.emailId}`);
-    email = await response.json();
+    email = await get_email_details(document.querySelector('#email-details-card').dataset.emailId);
   }
   catch (error) {
-    console.log(`Error: ${error.message}`);
+    alert(`Error Fetching Email Details: ${error.message}`);
     return;
   }
 
@@ -279,7 +285,7 @@ async function toggle_archive() {
     });
   }
   catch (error) {
-    console.log(`Error: ${error.message}`);
+    alert(`Error Toggling Archive: ${error.message}`);
     return;
   }
 
@@ -290,28 +296,21 @@ async function toggle_archive() {
 
 /*=== Logic for replying email ===*/
 async function email_reply() {
-  
-  // GET email details
-  // const email = await get_email_details(document.querySelector('#email-details-card').dataset.emailId);
-
-  // console.log(email);
+  // GET email details from server
+  let email = {};
+  try {
+    email = await get_email_details(document.querySelector('#email-details-card').dataset.emailId);
+  }
+  catch (error) {
+    alert(`Error Fetching Email Details: ${error.message}`);
+    return;
+  }
 
   // Take the user to Compose Form
   compose_email();
 
-  let email = {};
-  // GET the clicked email-element's details from server
-  try {
-    const response = await fetch(`emails/${document.querySelector('#email-details-card').dataset.emailId}`);
-    email = await response.json();
-  }
-  catch (error) {
-    console.log(`Error: ${error.message}`);
-    return;
-  }
-
   // Add the values to HTML 
   document.querySelector('#compose-recipients').value = email.sender;
   document.querySelector('#compose-subject').value = (email.subject.startsWith("Re: ")) ? email.subject : `Re: ${email.subject}`;
-  document.querySelector('#compose-text').value = `On ${email.timestamp} ${email.sender} wrote: \n${email.body}`;
+  document.querySelector('#compose-text').value = `\n\nOn ${email.timestamp} ${email.sender} wrote: \n${email.body}`;
 }
