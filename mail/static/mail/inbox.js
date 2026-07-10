@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // Use buttons to toggle between views
   document.querySelector('#inbox').addEventListener('click', () => load_mailbox('inbox'));
   document.querySelector('#sent').addEventListener('click', () => load_mailbox('sent'));
-  document.querySelector('#archived').addEventListener('click', () => load_mailbox('archive'));
+  document.querySelector('#archive').addEventListener('click', () => load_mailbox('archive'));
   document.querySelector('#compose').addEventListener('click', compose_email);
 
   // By default, load the inbox
@@ -19,7 +19,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const email_item = event.target.closest(".email-item")    // Look upwards DOM for <a> with '.email-item' class
     if (email_item) {
       event.preventDefault();
-      load_email(email_item);
+      set_active_nav_btn();     // Remove Highlight from Sidebar Button
+      load_email(email_item.dataset.emailId);
     }
   });
 
@@ -37,6 +38,9 @@ function compose_email() {
 
   // Show Page title
   document.querySelector('#email-box-title').innerHTML = `<h2>New Email</h2>`;
+
+  // Set Active Highlight
+  set_active_nav_btn(document.querySelector("#compose"));
   
   // Clear out composition fields
   compose_form_reset();
@@ -51,6 +55,9 @@ function load_mailbox(mailbox) {
   // Show Page title as mailbox name
   document.querySelector('#email-box-title').innerHTML = `<h2>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h2>`;
 
+  // Set Active Highlight
+  set_active_nav_btn(document.querySelector(`#${mailbox}`));
+
   // Store mailbox name in HTML
   document.querySelector('#emails-view').dataset.mailboxName = mailbox;
 
@@ -58,7 +65,7 @@ function load_mailbox(mailbox) {
   render_mails(mailbox);
 }
 
-function load_email(email_item) {
+function load_email(email_id) {
   // Show a single email details and hide other views
   document.querySelector('#emails-view').style.display = 'none';
   document.querySelector('#compose-view').style.display = 'none';
@@ -68,7 +75,7 @@ function load_email(email_item) {
   document.querySelector('#email-box-title').innerHTML = `<h2>Viewing Email</h2>`;
 
   // Loads the actual email
-  render_single_email(email_item);
+  render_single_email(email_id);
 }
 
 
@@ -88,6 +95,16 @@ async function get_email_details(email_id) {
     throw new Error(data.error || "Something went wrong.");
 
   return data;
+}
+
+function set_active_nav_btn(nav_btn = null) {
+  document.querySelectorAll(".nav-btn").forEach(btn => {
+    btn.classList.remove("active");
+  })
+
+  if (nav_btn) {
+    nav_btn.classList.add("active");
+  }
 }
 
 
@@ -194,11 +211,11 @@ async function render_mails(mailbox) {
 }
 
 /*=== Logic for viewing a specific mail ===*/
-async function render_single_email(email_item) {
+async function render_single_email(email_id) {
   // GET email details from server
   let email = {};
   try {
-    email = await get_email_details(email_item.dataset.emailId);
+    email = await get_email_details(email_id);
   }
   catch (error) {
     alert(`Error Fetching Email Details: ${error.message}`);

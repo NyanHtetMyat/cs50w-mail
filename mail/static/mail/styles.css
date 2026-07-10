@@ -2,7 +2,7 @@
 
 :root {
     /* These two are used as opposite depending on the UI area */
-    --primary-color: #3a1269;
+    --primary-color: #491683;
     --primary-hover-color: #1f0e38;
     --primary-bg-color: #f1ebf8;
 
@@ -48,6 +48,10 @@ p {
     border-color: var(--primary-color);
 }
 
+.active {
+    background-color: var(--primary-hover-color) !important;
+}
+
 /* ===== UTILITY CLASSES ===== */
 .btn-icon {
     border: none;
@@ -60,7 +64,6 @@ p {
 .text-red {
     color: red;
 }
- 
 
 /* ===== FOR MOBILE SCREENS ===== */
 @media (max-width: 768px) {
