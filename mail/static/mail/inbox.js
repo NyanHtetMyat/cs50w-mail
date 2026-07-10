@@ -1,13 +1,25 @@
 document.addEventListener('DOMContentLoaded', function() {
 
-  // Use buttons to toggle between views
-  document.querySelector('#inbox').addEventListener('click', () => load_mailbox('inbox'));
-  document.querySelector('#sent').addEventListener('click', () => load_mailbox('sent'));
-  document.querySelector('#archive').addEventListener('click', () => load_mailbox('archive'));
-  document.querySelector('#compose').addEventListener('click', compose_email);
-
   // By default, load the inbox
   load_mailbox('inbox');
+
+  /*=== BUTTONS FOR TOGGLING BETWEEN VIEWS ===*/
+  document.querySelector('#inbox').addEventListener('click', () => {
+    add_to_history('mailbox', 'inbox');
+    load_mailbox('inbox');
+  });
+  document.querySelector('#sent').addEventListener('click', () => {
+    add_to_history('mailbox', 'sent');
+    load_mailbox('sent');
+  });
+  document.querySelector('#archive').addEventListener('click', () => {
+    add_to_history('mailbox', 'archive');
+    load_mailbox('archive');
+  });
+  document.querySelector('#compose').addEventListener('click', () => {
+    add_to_history('compose');
+    compose_email();
+  });
 
   /*=== FORM/ LINK LISTENERS ===*/
   document.querySelector("#compose-form").addEventListener('submit', compose_submit);
@@ -19,13 +31,30 @@ document.addEventListener('DOMContentLoaded', function() {
     const email_item = event.target.closest(".email-item")    // Look upwards DOM for <a> with '.email-item' class
     if (email_item) {
       event.preventDefault();
-      set_active_nav_btn();     // Remove Highlight from Sidebar Button
+
+      const email_id = email_item.dataset.emailId;
+
+      set_active_nav_btn();
+      add_to_history('email', email_id);
       load_email(email_item.dataset.emailId);
     }
   });
 
   /*=== OTHER BUTTONS ===*/
   document.querySelector("#compose-reset").addEventListener('click', compose_form_reset);
+
+  /*=== BROWSER BACKBUTTON LISTENER ===*/
+  window.addEventListener('popstate', event => {
+    if (event.state.view === 'mailbox') {
+      load_mailbox(event.state.mailbox);
+    }
+    else if (event.state.view === 'compose') {
+      compose_email();
+    }
+    else if (event.state.view === 'email') {
+      load_email(event.state.email_id);
+    }
+  });
 });
 
 
@@ -86,8 +115,20 @@ function compose_form_reset() {
   document.querySelector('#compose-text').value = '';
 }
 
+function add_to_history(view, param = null) {
+  if (view === 'mailbox') {
+    history.pushState({ view: view, mailbox: param }, "", `/mailbox/${param}`);
+  }
+  else if (view === 'compose') {
+    history.pushState({ view: view }, "", `/${view}`);
+  }
+  else if (view === 'email') {
+    history.pushState({ view: view, email_id: param }, "", `/emails/${param}`);
+  }
+}
+
 async function get_email_details(email_id) {
-  const response = await fetch(`emails/${email_id}`);
+  const response = await fetch(`/emails/${email_id}`);
   const data = await response.json();
 
   // For errors of 404 or 500
@@ -140,6 +181,7 @@ async function compose_submit(event) {
     return;
   }
   // Hide Compose View and Show Inbox
+  add_to_history('mailbox', 'inbox');
   load_mailbox('inbox');
 }
 
@@ -200,7 +242,7 @@ async function render_mails(mailbox) {
               <dt class="col-auto fw-bold">From :</dt>
               <dd class="col">${email.sender}</dd>
 
-              <h4 class="col-12 text-turncate">${email.subject}</h4>
+              <h4 class="col-12 text-truncate">${email.subject}</h4>
 
               <small class="col-12 text-muted">${email.timestamp}</small>
           </dl>
@@ -307,6 +349,7 @@ async function toggle_archive() {
   }
 
   // Redirect to Inbox
+  add_to_history('mailbox', 'inbox');
   load_mailbox('inbox');
 }
 
@@ -324,6 +367,7 @@ async function email_reply() {
   }
 
   // Take the user to Compose Form
+  add_to_history('compose');
   compose_email();
 
   // Add the values to HTML 

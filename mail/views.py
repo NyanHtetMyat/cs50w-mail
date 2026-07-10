@@ -2,7 +2,7 @@ import json
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseRedirect
 from django.shortcuts import HttpResponse, HttpResponseRedirect, render
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
@@ -11,6 +11,11 @@ from .models import User, Email
 
 
 def index(request):
+    """ To make my root as '/inbox' instead of just '/' """
+    return HttpResponseRedirect(reverse('inbox'))
+
+
+def inbox(request, param = None):
 
     # Authenticated users view their inbox
     if request.user.is_authenticated:
