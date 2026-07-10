@@ -139,8 +139,8 @@ async function compose_submit(event) {
     alert(`Error Sending Email: ${error.message}`);
     return;
   }
-  // Hide Compose View and Show Inbox
-  load_mailbox('inbox');
+  // Hide Compose View and Show Sent
+  load_mailbox('sent');
 }
 
 /*=== Logic for rendering emails ===*/
